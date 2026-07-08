@@ -1,4 +1,4 @@
-mlflow>=2.14,<3
+mlflow>=2.14,<4
 click>=8.1
 pydantic>=2.7
 pydantic-settings>=2.3

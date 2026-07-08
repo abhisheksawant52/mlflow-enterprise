@@ -12,7 +12,7 @@ license = { text = "MIT" }
 authors = [{ name = "Abhishek Sawant" }]
 keywords = ["mlflow", "mlops", "model-registry", "machine-learning", "enterprise"]
 dependencies = [
-    "mlflow>=2.14,<3",
+    "mlflow>=2.14,<4",
     "click>=8.1",
     "pydantic>=2.7",
     "pydantic-settings>=2.3",

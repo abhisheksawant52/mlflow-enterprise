@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mlflow.fullname" . }}-config
+  labels:
+    {{- include "mlflow.labels" . | nindent 4 }}
+data:
+  MLFLOW_PORT: {{ .Values.containerPort | quote }}
+  MLFLOW_DEFAULT_ARTIFACT_ROOT: {{ .Values.artifactStore.defaultArtifactRoot | quote }}
+  AWS_DEFAULT_REGION: {{ .Values.artifactStore.awsRegion | quote }}
+  BACKEND_STORE_HOST: {{ include "mlflow.backendStoreHost" . | quote }}
+  BACKEND_STORE_DB: {{ .Values.backendStore.database | quote }}
+  BACKEND_STORE_USER: {{ .Values.backendStore.username | quote }}

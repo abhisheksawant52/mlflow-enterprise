@@ -1,0 +1,21 @@
+aws_region       = "us-east-1"
+environment      = "dev"
+project          = "mlflow-enterprise"
+eks_cluster_name = "platform-eks-dev"
+mlflow_namespace = "mlflow"
+
+# Artifact store (S3)
+artifact_bucket_name   = "mlflow-enterprise-artifacts-dev"
+artifact_force_destroy = false
+
+# Backend store (RDS Postgres)
+db_name              = "mlflow"
+db_username          = "mlflow"
+db_instance_class    = "db.t3.medium"
+db_allocated_storage = 20
+db_multi_az          = false
+
+# Networking
+vpc_id                        = "vpc-0123456789abcdef0"
+db_subnet_ids                 = ["subnet-0aaa1111", "subnet-0bbb2222"]
+db_allowed_security_group_ids = ["sg-0eks111111"]

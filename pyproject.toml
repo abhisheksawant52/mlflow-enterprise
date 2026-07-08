@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlflow-enterprise"
+version = "0.1.0"
+description = "Client and CLI helpers for an enterprise MLflow tracking + model registry deployment."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Abhishek Sawant" }]
+keywords = ["mlflow", "mlops", "model-registry", "machine-learning", "enterprise"]
+dependencies = [
+    "mlflow>=2.14,<3",
+    "click>=8.1",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "boto3>=1.34",
+    "psycopg2-binary>=2.9",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "ruff>=0.5", "black>=24.0", "pre-commit>=3.7"]
+
+[project.scripts]
+mlflowctl = "mlflow_enterprise.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/abhisheksawant52/mlflow-enterprise"
+Issues = "https://github.com/abhisheksawant52/mlflow-enterprise/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"

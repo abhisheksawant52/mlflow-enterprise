@@ -1,0 +1,17 @@
+MLflow tracking server "{{ include "mlflow.fullname" . }}" has been deployed.
+
+1. The server listens on port {{ .Values.service.port }} (MLflow default 5000).
+
+2. Backend store : postgresql://{{ .Values.backendStore.username }}@{{ include "mlflow.backendStoreHost" . }}/{{ .Values.backendStore.database }}
+   Artifact store: {{ .Values.artifactStore.defaultArtifactRoot }}
+
+{{- if .Values.ingress.enabled }}
+3. Access the UI via the configured ingress host(s):
+{{- range .Values.ingress.hosts }}
+   http://{{ .host }}
+{{- end }}
+{{- else }}
+3. Port-forward to reach the UI locally:
+   kubectl port-forward svc/{{ include "mlflow.fullname" . }} {{ .Values.service.port }}:{{ .Values.service.port }}
+   Then open http://localhost:{{ .Values.service.port }}
+{{- end }}

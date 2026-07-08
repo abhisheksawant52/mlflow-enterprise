@@ -1,0 +1,91 @@
+# Default values for the mlflow chart.
+
+replicaCount: 2
+
+image:
+  repository: ghcr.io/mlflow/mlflow
+  tag: "v2.14.1"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# MLflow tracking server listens on 5000 by default.
+service:
+  type: ClusterIP
+  port: 5000
+
+containerPort: 5000
+
+serviceAccount:
+  create: true
+  # When running on EKS, set the IRSA role ARN granting S3 artifact access.
+  annotations: {}
+    # eks.amazonaws.com/role-arn: arn:aws:iam::123456789012:role/mlflow-artifact-access
+  name: ""
+
+# Backend (tracking) store — RDS Postgres provisioned by the Terraform backend-db module.
+backendStore:
+  # Host:port of the RDS instance (Terraform output db_endpoint).
+  host: mlflow.cluster-abc123.us-east-1.rds.amazonaws.com
+  port: 5432
+  database: mlflow
+  username: mlflow
+  # Password is read from a pre-existing Kubernetes secret, never templated in plaintext.
+  existingSecret: mlflow-backend-store
+  existingSecretPasswordKey: password
+
+# Artifact store — S3 bucket provisioned by the Terraform artifact-store module.
+artifactStore:
+  defaultArtifactRoot: s3://mlflow-enterprise-artifacts/
+  awsRegion: us-east-1
+
+extraEnv: []
+
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: "1"
+    memory: 1Gi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 75
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations: {}
+    # nginx.ingress.kubernetes.io/proxy-body-size: "0"
+  hosts:
+    - host: mlflow.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: mlflow-tls
+      hosts:
+        - mlflow.example.com
+
+podAnnotations: {}
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: false
+  capabilities:
+    drop:
+      - ALL
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

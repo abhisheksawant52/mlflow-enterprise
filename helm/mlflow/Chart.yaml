@@ -1,0 +1,15 @@
+apiVersion: v2
+name: mlflow
+description: Enterprise MLflow tracking server backed by RDS Postgres and an S3 artifact store.
+type: application
+version: 0.1.0
+appVersion: "2.14.1"
+keywords:
+  - mlflow
+  - mlops
+  - model-registry
+home: https://github.com/abhisheksawant52/mlflow-enterprise
+sources:
+  - https://github.com/abhisheksawant52/mlflow-enterprise
+maintainers:
+  - name: Abhishek Sawant
